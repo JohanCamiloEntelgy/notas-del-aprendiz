@@ -2,7 +2,7 @@
 
 > **nota importante:** para crear resolvers, queries, y mutations me basé en el ejemplo de emmy **Homologaciones**
 
-## PRISMA
+## I) PRISMA
 
 ### En schema.prisma
 
@@ -49,7 +49,7 @@ model paramvalores{
 npx prisma generate
 ```
 
-6. crear resolver en src/resolvers/**Documento.js** para definir la relación con modulo
+3. crear resolver en src/resolvers/**Documento.js** para definir la relación con modulo
 ```javascript
 function modulo(parent, args, context) {
     return context.prisma.documento.findUnique({ where: { id: parent.id } }).modulo()
@@ -62,7 +62,7 @@ module.exports = {
 > - para esto me basé en src/resolvers/**Homologacioncampo.js** de emmy
 
 ### En index.js
-7. importar el resolver **documento** y ponerlo en el array de resolvers
+4. importar el resolver **documento** y ponerlo en el array de resolvers
 ```javascript
 const documento = require('./resolvers/Documento');
 
@@ -95,11 +95,11 @@ const resolvers = {
 
 ```
 
-## GRAPHQL
+## II) GRAPHQL
 
 ### En schema.graphql
 
-3. crear el **type documento {}** que es como el modelo en graphql
+5. crear el **type documento {}** que es como el modelo en graphql
 ```javascript
 type documento {
   id: ID!  
@@ -109,13 +109,13 @@ type documento {
 }
 ```
 
-4. crear las querys dentro de **type Query {}**
+6. crear las querys dentro de **type Query {}**
 ```javascript
 consultarDocumentos: [documento]
 getDocumento(id: Int!): documento!
 ```
 
-5. crear las mutations dentro de **type Mutation {}**
+7. crear las mutations dentro de **type Mutation {}**
 ```javascript
 createDocumento(nombre_documento: String!, descripcion: String!, id_modulo: Int!): documento
 updateDocumento(id:Int!, nombre_documento: String!, descripcion: String!, id_modulo: Int!): documento  
@@ -123,7 +123,7 @@ deleteDocumento(id:Int!): documento
 ```
 
 
-## Querys
+## III) Querys
 
 8. Crear src/resolvers/Querys/**documento.js** para implementar las Querys declaradas de **schema.graphql**
 ```javascript
@@ -150,7 +150,41 @@ module.exports = {
 	getDocumento
 }
 ```
+### Query.js
+9. hacer require de mi query creado **documento** y ponerlo en mixing
+```javascript
+const documento = require('./Querys/documento')
 
+//Add separate mutation files here for combine static export with dynamic form
+const mixing = {
+  ...FlujoTrabajo,
+  ...homologaciones,
+  ...homologacioncampos,
+  ...documento
+}
+```
+#### RUN
+```
+node src/index
+```
+> cada vez que se hagan cambios en **schema.graphql** o en otro lado del back en general levantar de nuevo el back si no se tiene instalado **nodemon**
+
+10. testear las querys creada en **apollo server**
+
+```javascript
+query { consultarDocumentos{ id, descripcion, modulo {
+  id, descr
+} } }
+```
+
+```javascript
+query {
+  getDocumento(id: 1) {
+    nombre_documento,
+    descripcion
+  }
+}
+```
 
 
 ## Mutations
