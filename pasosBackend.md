@@ -2,7 +2,7 @@
 
 > **nota importante:** para crear resolvers, queries, y mutations me basé en el ejemplo de emmy **Homologaciones**
 
-## I) PRISMA
+## i) PRISMA
 
 ### En schema.prisma
 
@@ -95,7 +95,7 @@ const resolvers = {
 
 ```
 
-## II) GRAPHQL
+## ii) GRAPHQL
 
 ### En schema.graphql
 
@@ -123,9 +123,9 @@ deleteDocumento(id:Int!): documento
 ```
 
 
-## III) Querys
+## iii) Querys
 
-8. Crear src/resolvers/Querys/**documento.js** para implementar las Querys declaradas de **schema.graphql**
+8. Crear query src/resolvers/Querys/**documento.js** para implementar las Querys declaradas de **schema.graphql**
 ```javascript
 //===========================READ DOCUMENTO======================//
 function consultarDocumentos(parent, args, context) {
@@ -150,6 +150,8 @@ module.exports = {
 	getDocumento
 }
 ```
+> basada en query **homologaciones.js**
+
 ### Query.js
 9. hacer require de mi query creado **documento** y ponerlo en mixing
 ```javascript
@@ -169,7 +171,7 @@ node src/index
 ```
 > cada vez que se hagan cambios en **schema.graphql** o en otro lado del back en general levantar de nuevo el back si no se tiene instalado **nodemon**
 
-10. testear las querys creada en **apollo server**
+10. testear las querys creadas en **apollo server**
 
 ```javascript
 query { consultarDocumentos{ id, descripcion, modulo {
@@ -187,6 +189,61 @@ query {
 ```
 
 
-## Mutations
+## iv) Mutations
+
+11. Crear mutation para CUD src/resolvers/Mutations/**documento.js** para implementar las Mutations declaradas de **schema.graphql**
+
+```javascript
+async function createDocumento(parent, args, context, info){
+		
+	return await context.prisma.documento.create({
+			data: {
+                id_modulo: args.id_modulo,
+                nombre_documento: args.nombre_documento,
+				descripcion: args.descripcion,                
+			}
+	});
+}
+async function updateDocumento(parent, args, context, info){
+	return await context.prisma.documento.update({
+        where: { id: args.id },
+        data: {
+            id_modulo: args.id_modulo,
+            nombre_documento: args.nombre_documento,
+            descripcion: args.descripcion,
+        }
+      })
+}
+async function deleteDocumento(parent, args, context, info){
+	return await context.prisma.documento.delete({
+    where: {
+      id: args.id
+    }
+  })
+}
+
+module.exports = {
+    createDocumento,
+    updateDocumento,
+    deleteDocumento
+}
+```
+> basada en mutation **homologaciones.js**
+
+12. testear las mutations creadas en **apollo server**
+```javascript
+mutation {
+  createDocumento(nombre_documento: "doc_ejemplo", descripcion: "descripcion ejemplo", id_modulo: 1) {
+    id, nombre_documento
+  }
+}
+```
+```javascript
+mutation {
+  updateDocumento(id: 1, nombre_documento: "editado doc", descripcion: "desc editada", id_modulo: 1) {
+    id, nombre_documento, descripcion
+  }
+}
+```
 ```javascript
 ```
