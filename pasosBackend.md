@@ -245,5 +245,32 @@ mutation {
   }
 }
 ```
+
+## Pasos Front
+
+1. Crear model en src/app/models/**documento.js**
 ```javascript
+import { ParamValores } from "./paramvalores.model";
+
+export class Documento {
+    public id: number;
+    public modulo?: ParamValores;
+    public nombre_documento: string;
+    public descripcion: string;    
+}
 ```
+2. Crear métodos dentro del service para llamar los querys y mutations de Graphql
+```javascript
+export class ManualNormatividadService {
+
+  constructor(private http: HttpClient) { }
+
+  constularDocumentos() {}
+  getDocumento() {}
+
+  crearDocumento() {}
+  actualizarDocumento() {}
+  eliminarDocumento() {}
+}
+```
+> para referencia consultar **homologaciones.service.ts**
