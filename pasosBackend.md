@@ -44,7 +44,7 @@ model paramvalores{
 
 ## En schema.graphql
 
-3. crear el type que es como el modelo en graphql
+3. crear el **type documento {}** que es como el modelo en graphql
 ```javascript
 type documento {
   id: ID!  
@@ -66,9 +66,16 @@ createDocumento(nombre_documento: String!, descripcion: String!, id_modulo: Int!
 updateDocumento(id:Int!, nombre_documento: String!, descripcion: String!, id_modulo: Int!): documento  
 deleteDocumento(id:Int!): documento
 ```
-
-
-
+6. crear resolver en src/resolvers/**Documento.js** para definir la relación con modulo
+```javascript
+function modulo(parent, args, context) {
+    return context.prisma.documento.findUnique({ where: { id: parent.id } }).modulo()
+}
+module.exports = {    
+    modulo,
+}
+```
+> para esto me basé en src/resolvers/**Homologacioncampo.js** de emmy
 
 ```javascript
 ```
