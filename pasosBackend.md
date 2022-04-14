@@ -15,7 +15,8 @@ model documento {
   descripcion String
 }
 ```
-> para relacionar con modulo se relaciona con el modelo **paramvalores** el campo id_modulo con id
+> - para relacionar con modulo se relaciona con el modelo **paramvalores** el campo id_modulo con id <br>
+- esto simula una relación con llave foranea
 
 2. asociar el modelo creado en el modelo **paramvalores** (lin 181)
 
