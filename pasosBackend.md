@@ -2,6 +2,8 @@
 
 > **nota importante:** para crear resolvers, queries, y mutations me basé en el ejemplo de emmy **Homologaciones**
 
+## PRISMA
+
 ### En schema.prisma
 
 1. crear el modelo en 
@@ -47,30 +49,6 @@ model paramvalores{
 npx prisma generate
 ```
 
-### En schema.graphql
-
-3. crear el **type documento {}** que es como el modelo en graphql
-```javascript
-type documento {
-  id: ID!  
-  modulo: paramvalores
-  nombre_documento: String
-  descripcion: String
-}
-```
-
-4. crear las querys dentro de **type Query {}**
-```javascript
-consultarDocumentos: [documento]
-getDocumento(id: Int!): documento!
-```
-
-5. crear las mutations dentro de **type Mutation {}**
-```javascript
-createDocumento(nombre_documento: String!, descripcion: String!, id_modulo: Int!): documento
-updateDocumento(id:Int!, nombre_documento: String!, descripcion: String!, id_modulo: Int!): documento  
-deleteDocumento(id:Int!): documento
-```
 6. crear resolver en src/resolvers/**Documento.js** para definir la relación con modulo
 ```javascript
 function modulo(parent, args, context) {
@@ -80,9 +58,8 @@ module.exports = {
     modulo,
 }
 ```
-> aquí **modulo** corresponde con la variable **modulo** creada en la relación en el schema.prisma de model documento en el paso 1.
-
-> para esto me basé en src/resolvers/**Homologacioncampo.js** de emmy
+> - aquí **modulo** corresponde con la variable **modulo** creada en la relación en el schema.prisma de model documento en el paso 1.
+> - para esto me basé en src/resolvers/**Homologacioncampo.js** de emmy
 
 ### En index.js
 7. importar el resolver **documento** y ponerlo en el array de resolvers
@@ -116,6 +93,33 @@ const resolvers = {
   DateTime: GraphQLDateTime
 }
 
+```
+
+## GRAPHQL
+
+### En schema.graphql
+
+3. crear el **type documento {}** que es como el modelo en graphql
+```javascript
+type documento {
+  id: ID!  
+  modulo: paramvalores
+  nombre_documento: String
+  descripcion: String
+}
+```
+
+4. crear las querys dentro de **type Query {}**
+```javascript
+consultarDocumentos: [documento]
+getDocumento(id: Int!): documento!
+```
+
+5. crear las mutations dentro de **type Mutation {}**
+```javascript
+createDocumento(nombre_documento: String!, descripcion: String!, id_modulo: Int!): documento
+updateDocumento(id:Int!, nombre_documento: String!, descripcion: String!, id_modulo: Int!): documento  
+deleteDocumento(id:Int!): documento
 ```
 
 
