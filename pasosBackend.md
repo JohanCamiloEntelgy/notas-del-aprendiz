@@ -2,7 +2,7 @@
 
 > **nota importante:** para crear resolvers, queries, y mutations me basé en el ejemplo de emmy **Homologaciones**
 
-### schema.prisma
+## En schema.prisma
 
 1. crear el modelo en 
 
@@ -42,7 +42,7 @@ model paramvalores{
 }
 ```
 
-### schema.graphql
+## En schema.graphql
 
 3. crear el type que es como el modelo en graphql
 ```javascript
