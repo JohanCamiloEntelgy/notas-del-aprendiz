@@ -2,7 +2,7 @@
 
 > **nota importante:** para crear resolvers, queries, y mutations me basé en el ejemplo de emmy **Homologaciones**
 
-## En schema.prisma
+### En schema.prisma
 
 1. crear el modelo en 
 
@@ -42,8 +42,12 @@ model paramvalores{
    documentos documento[] // aquí asocio modelo con variable
 }
 ```
+#### RUN
+```
+npx prisma generate
+```
 
-## En schema.graphql
+### En schema.graphql
 
 3. crear el **type documento {}** que es como el modelo en graphql
 ```javascript
@@ -76,7 +80,75 @@ module.exports = {
     modulo,
 }
 ```
+> aquí **modulo** corresponde con la variable **modulo** creada en la relación en el schema.prisma de model documento en el paso 1.
+
 > para esto me basé en src/resolvers/**Homologacioncampo.js** de emmy
 
+### En index.js
+7. importar el resolver **documento** y ponerlo en el array de resolvers
+```javascript
+const documento = require('./resolvers/Documento');
+
+
+const resolvers = {
+  Query,
+  Mutation,
+  usuario,
+  empresa,
+  funcion,
+  plantilla,
+  rol,
+  paramvalores,
+  paramcampo,
+  irolloadercrear,
+  proceso,
+  plantillacampos,
+  pais,
+  flujo_trabajo,
+  flujotrabajo_accion,
+  homologaciones,
+  homologacioncampos,
+  calendario,
+  paramcal,
+  reporte,
+  param_reporte,
+  documento,
+  DateTime: GraphQLDateTime
+}
+
+```
+
+
+## Querys
+
+8. Crear src/resolvers/Querys/**documento.js** para implementar las Querys declaradas de **schema.graphql**
+```javascript
+//===========================READ DOCUMENTO======================//
+function consultarDocumentos(parent, args, context) {
+	const { userId } = context;
+	if (userId != null) {
+		return context.prisma.documento.findMany();
+	}
+}
+
+function getDocumento(parent, args, context) {
+	const { userId } = context;
+	if (userId != null) {
+		return context.prisma.documento.findUnique({
+			where: {
+				id: args.id
+			}
+		})
+	}
+}
+module.exports = {
+	consultarDocumentos,
+	getDocumento
+}
+```
+
+
+
+## Mutations
 ```javascript
 ```
